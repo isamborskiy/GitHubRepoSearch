@@ -61,6 +61,7 @@ dependencies {
     implementation libraries.appCompat
     implementation libraries.design
     implementation libraries.recyclerView
+    implementation libraries.cardView
 
     implementation libraries.jackson
     implementation libraries.jacksonKotlin

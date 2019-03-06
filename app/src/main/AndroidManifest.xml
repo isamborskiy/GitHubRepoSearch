@@ -3,6 +3,8 @@
           xmlns:tools="http://schemas.android.com/tools"
           package="io.samborskii.githubreposearch">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
             android:name=".GitHubRepoSearchApplication"
             android:allowBackup="false"
@@ -14,7 +16,7 @@
             tools:ignore="GoogleAppIndexingWarning"
             tools:targetApi="n">
 
-        <activity android:name=".ui.MainActivity">
+        <activity android:name=".ui.main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

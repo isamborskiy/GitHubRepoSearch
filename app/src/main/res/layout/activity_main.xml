@@ -5,14 +5,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.MainActivity">
+        tools:context=".ui.main.MainActivity"
+        android:background="@color/background">
 
-    <EditText
-            android:id="@+id/search"
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Hello World!"
-            android:inputType="text"/>
+            android:layout_height="wrap_content">
+
+        <EditText
+                android:id="@+id/searchQuery"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hello World!"
+                android:inputType="text"/>
+
+        <Button
+                android:id="@+id/search"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/search"/>
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
