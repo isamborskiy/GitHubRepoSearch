@@ -58,8 +58,10 @@ ext.libraries = [
         rxJava             : 'io.reactivex.rxjava2:rxjava:2.2.7',
         rxKotlin           : 'io.reactivex.rxjava2:rxkotlin:2.3.0',
         rxAndroid          : 'io.reactivex.rxjava2:rxkotlin:2.1.1',
-        rxBinding          : 'com.jakewharton.rxbinding2:rxbinding:2.2.0',
-        rxPM               : 'me.dmdev.rxpm:rxpm:1.2.3',
+
+        // other
+        paging             : 'android.arch.paging:runtime:1.0.1',
+        lifecycle          : 'android.arch.lifecycle:extensions:1.1.1',
 
         // dagger
         dagger             : 'com.google.dagger:dagger:' + versions.dagger,

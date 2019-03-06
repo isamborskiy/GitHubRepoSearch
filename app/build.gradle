@@ -75,8 +75,9 @@ dependencies {
     implementation libraries.rxJava
     implementation libraries.rxKotlin
     implementation libraries.rxAndroid
-    // implementation libraries.rxBinding
-    implementation libraries.rxPM
+
+    implementation libraries.paging
+    implementation libraries.lifecycle
 
     kapt libraries.daggerProcessor
     implementation libraries.dagger

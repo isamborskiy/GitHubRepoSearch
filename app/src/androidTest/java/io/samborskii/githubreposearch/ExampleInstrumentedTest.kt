@@ -1,4 +1,4 @@
-package io.samborskii.testapp
+package io.samborskii.githubreposearch
 
 import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
