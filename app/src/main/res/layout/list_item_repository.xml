@@ -44,15 +44,48 @@
                     android:textSize="12sp"
                     tools:text="A C implementation of Tetris using Pennsim through LC4"/>
 
-            <TextView
-                    android:id="@+id/repoLanguage"
+            <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/default_margin"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/repo_info"
-                    android:textSize="12sp"
-                    tools:text="Assembly"/>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                <View
+                        android:id="@+id/repoLanguageIcon"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:background="@drawable/circle"/>
+
+                <TextView
+                        android:id="@+id/repoLanguage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/half_default_margin"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/repo_info"
+                        android:textSize="12sp"
+                        tools:text="Assembly"/>
+
+                <View
+                        android:id="@+id/repoStarIcon"
+                        android:layout_width="@dimen/icon_size"
+                        android:layout_height="@dimen/icon_size"
+                        android:background="@drawable/star"/>
+
+                <TextView
+                        android:id="@+id/repoStar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/half_default_margin"
+                        android:layout_marginEnd="@dimen/default_margin"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/repo_info"
+                        android:textSize="12sp"
+                        tools:text="10"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

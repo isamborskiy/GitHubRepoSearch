@@ -141,7 +141,8 @@ class RepositoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(repository: Repository) {
         itemView.repoName.text = repository.fullName
         itemView.repoDescription.setTextOrHide(repository.description)
-        itemView.repoLanguage.setTextOrHide(repository.language)
+        itemView.repoLanguage.setTextOrHide(repository.language, itemView.repoLanguageIcon)
+        itemView.repoStar.setTextOrHide(repository.starsCount.toString(), itemView.repoStarIcon)
 
         itemView.repoCard.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW).apply {
@@ -151,12 +152,14 @@ class RepositoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 
-    private fun TextView.setTextOrHide(text: String?) {
+    private fun TextView.setTextOrHide(text: String?, dependentView: View? = null) {
         if (text != null) {
             this.visibility = View.VISIBLE
+            dependentView?.apply { visibility = View.VISIBLE }
             this.text = text
         } else {
             this.visibility = View.GONE
+            dependentView?.apply { visibility = View.GONE }
         }
     }
 }

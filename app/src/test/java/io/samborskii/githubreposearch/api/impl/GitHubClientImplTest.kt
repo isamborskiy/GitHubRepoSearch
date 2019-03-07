@@ -22,7 +22,7 @@ class GitHubClientImplTest : BaseMockWebServerTest() {
     private val emptyResponse: SearchResponse = SearchResponse(0, false, emptyList())
     private val singleResponse: SearchResponse = SearchResponse(
         1, false, listOf(
-            Repository(1, "test-repo", "http://repo.io", null, null)
+            Repository(1, "test-repo", "http://repo.io", null, null, 0)
         )
     )
     private val errorResponse: String = """
