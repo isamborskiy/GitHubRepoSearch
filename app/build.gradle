@@ -13,7 +13,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "io.samborskii.testapp"
+        applicationId "io.samborskii.githubreposearch"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

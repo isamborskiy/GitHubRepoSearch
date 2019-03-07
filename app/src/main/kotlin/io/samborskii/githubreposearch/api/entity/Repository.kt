@@ -3,6 +3,8 @@ package io.samborskii.githubreposearch.api.entity
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
+val EMPTY_REPOSITORY = Repository(-1, "", "", null, null)
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Repository(
     @JsonProperty("id") val id: Long,

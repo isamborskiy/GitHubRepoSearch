@@ -9,30 +9,86 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.samborskii.githubreposearch.R
+import io.samborskii.githubreposearch.api.entity.EMPTY_REPOSITORY
 import io.samborskii.githubreposearch.api.entity.Repository
+import io.samborskii.githubreposearch.api.entity.SearchResponse
 import kotlinx.android.synthetic.main.list_item_repository.view.*
 
 
-class RepositoriesAdapter(
-    private val repositories: MutableList<Repository> = mutableListOf()
-) : RecyclerView.Adapter<RepositoryViewHolder>() {
+/**
+ * @param loadingCallback calls when loading item becomes visible (provides query and page index for loading)
+ */
+class RepositoriesAdapter(private val loadingCallback: (String, Int) -> Unit) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    fun updateRepositories(repositories: List<Repository>) {
-        this.repositories.clear()
-        this.repositories += repositories
-        notifyDataSetChanged()
+    private val repositories: MutableList<Repository> = mutableListOf()
+    private var query: String? = null
+
+    fun setQuery(query: String) {
+        if (this.query != query) {
+            val size = repositories.size
+            this.repositories.clear()
+            this.query = null
+            notifyItemRangeRemoved(0, size)
+
+            if (query.isNotBlank()) {
+                this.query = query
+                this.repositories += EMPTY_REPOSITORY
+                notifyItemInserted(0)
+            }
+        }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, type: Int): RepositoryViewHolder {
+    fun addRepositories(pageNum: Int, page: SearchResponse) {
+        this.repositories.removeAt(this.repositories.size - 1) // remove loading item
+        notifyItemRemoved(this.repositories.size)
+
+        val start = this.repositories.size % PAGE_SIZE
+        val newRepos = page.items.subList(start, page.items.size)
+
+        this.repositories += newRepos
+        if (this.repositories.size < page.totalCount) this.repositories += EMPTY_REPOSITORY
+
+        val firstInsertedItemIndex = (pageNum - 1) * PAGE_SIZE + start
+        notifyItemRangeInserted(firstInsertedItemIndex, this.repositories.size - firstInsertedItemIndex)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val view = inflater.inflate(R.layout.list_item_repository, parent, false)
-        return RepositoryViewHolder(view)
+
+        return when (type) {
+            ITEM_TYPE -> {
+                val view = inflater.inflate(R.layout.list_item_repository, parent, false)
+                RepositoryViewHolder(view)
+            }
+            // LOADING_TYPE
+            else -> {
+                val view = inflater.inflate(R.layout.list_item_loading, parent, false)
+                LoadingViewHolder(view)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(view: RecyclerView.ViewHolder, index: Int) {
+        if (getItemViewType(index) == ITEM_TYPE) {
+            (view as RepositoryViewHolder).bind(repositories[index])
+        } else {
+            query?.let {
+                loadingCallback(it, repositories.size / PAGE_SIZE + 1)
+            }
+        }
     }
 
     override fun getItemCount(): Int = repositories.size
 
-    override fun onBindViewHolder(view: RepositoryViewHolder, index: Int) {
-        view.bind(repositories[index])
+    override fun getItemViewType(position: Int): Int =
+        if (repositories[position] == EMPTY_REPOSITORY) LOADING_TYPE else ITEM_TYPE
+
+    companion object {
+        const val PAGE_SIZE: Int = 10
+
+        private const val ITEM_TYPE: Int = 0
+        private const val LOADING_TYPE: Int = 1
     }
 }
 
@@ -60,3 +116,5 @@ class RepositoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         }
     }
 }
+
+class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)

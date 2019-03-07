@@ -17,7 +17,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Hello World!"
+                android:text="nus bus"
                 android:inputType="text"/>
 
         <Button
@@ -32,4 +32,5 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
+
 </LinearLayout>

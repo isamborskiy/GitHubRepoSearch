@@ -5,5 +5,5 @@ import io.samborskii.githubreposearch.api.entity.SearchResponse
 
 interface GitHubClient {
 
-    fun searchRepositories(keywords: List<String>, page: Int): Single<SearchResponse>
+    fun searchRepositories(keywords: List<String>, page: Int, perPage: Int): Single<SearchResponse>
 }

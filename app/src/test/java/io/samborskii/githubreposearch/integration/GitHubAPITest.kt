@@ -23,14 +23,14 @@ class GitHubAPITest {
 
     @Test
     fun `make _nus bus_ query`() {
-        client.searchRepositories(listOf("nus", "bus"), 1)
+        client.searchRepositories(listOf("nus", "bus"), 1, 100)
             .test()
             .assertValue { it.totalCount > 0 && it.items.isNotEmpty() }
     }
 
     @Test
     fun `make empty query`() {
-        client.searchRepositories(listOf(), 1)
+        client.searchRepositories(listOf(), 1, 100)
             .test()
             .assertError { it is HttpException && it.code() == 422 }
     }

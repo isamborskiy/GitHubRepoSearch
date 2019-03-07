@@ -10,6 +10,7 @@ interface GitHubApi {
     @GET("/search/repositories")
     fun searchRepositories(
         @Query("q") query: String,
-        @Query("page") page: Int
+        @Query("page") page: Int,
+        @Query("per_page") perPage: Int
     ): Single<SearchResponse>
 }

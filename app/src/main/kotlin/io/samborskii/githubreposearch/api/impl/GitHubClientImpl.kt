@@ -22,6 +22,6 @@ class GitHubClientImpl(
         .build()
         .create(GitHubApi::class.java)
 
-    override fun searchRepositories(keywords: List<String>, page: Int): Single<SearchResponse> =
-        api.searchRepositories(keywords.joinToString("+"), page)
+    override fun searchRepositories(keywords: List<String>, page: Int, perPage: Int): Single<SearchResponse> =
+        api.searchRepositories(keywords.joinToString("+"), page, perPage)
 }

@@ -13,17 +13,17 @@
             android:id="@+id/repoCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="4dp"
+            android:layout_margin="@dimen/half_default_margin"
             android:clickable="true"
             android:focusable="true"
             android:foreground="?attr/selectableItemBackgroundBorderless"
             app:cardBackgroundColor="@android:color/white"
-            card_view:cardCornerRadius="4dp">
+            card_view:cardCornerRadius="@dimen/card_corner_radius">
 
         <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/default_margin"
                 android:orientation="vertical">
 
             <TextView
@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="#0366d6"
+                    android:textColor="@color/repo_title"
                     android:textSize="14sp"
                     tools:text="dtrupenn/Tetris"/>
 
@@ -39,8 +39,8 @@
                     android:id="@+id/repoDescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#586069"
+                    android:layout_marginTop="@dimen/half_default_margin"
+                    android:textColor="@color/repo_info"
                     android:textSize="12sp"
                     tools:text="A C implementation of Tetris using Pennsim through LC4"/>
 
@@ -48,9 +48,9 @@
                     android:id="@+id/repoLanguage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="@dimen/default_margin"
                     android:fontFamily="sans-serif-medium"
-                    android:textColor="#586069"
+                    android:textColor="@color/repo_info"
                     android:textSize="12sp"
                     tools:text="Assembly"/>
 
