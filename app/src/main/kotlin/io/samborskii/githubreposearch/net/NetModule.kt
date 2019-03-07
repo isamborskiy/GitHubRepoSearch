@@ -26,5 +26,5 @@ open class NetModule {
     @Named("apiHost")
     @Singleton
     @Provides
-    open fun apiHost() = API_HOST
+    open fun apiHost(): String = API_HOST
 }

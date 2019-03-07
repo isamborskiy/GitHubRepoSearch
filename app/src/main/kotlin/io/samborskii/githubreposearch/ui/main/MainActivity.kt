@@ -2,10 +2,9 @@ package io.samborskii.githubreposearch.ui.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.util.Log
-import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.samborskii.githubreposearch.GitHubRepoSearchApplication
@@ -13,11 +12,16 @@ import io.samborskii.githubreposearch.R
 import io.samborskii.githubreposearch.api.GitHubClient
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
+import javax.inject.Named
 
 class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var client: GitHubClient
+
+    @JvmField
+    @field:[Inject Named("pageSize")]
+    var pageSize: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,15 +31,17 @@ class MainActivity : AppCompatActivity() {
 
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = RepositoriesAdapter { query, pageNum -> loadData(query, pageNum) }
+        recyclerView.adapter = RepositoriesAdapter(pageSize) { query, pageNum, pageSize ->
+            loadData(query, pageNum, pageSize)
+        }
 
         search.setOnClickListener { (recyclerView.adapter as RepositoriesAdapter).setQuery(searchQuery.text.toString()) }
     }
 
     @SuppressLint("CheckResult")
-    private fun loadData(query: String, pageNum: Int) {
+    private fun loadData(query: String, pageNum: Int, pageSize: Int) {
         val keywords = query.split(" ")
-        client.searchRepositories(keywords, pageNum, RepositoriesAdapter.PAGE_SIZE)
+        client.searchRepositories(keywords, pageNum, pageSize)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
@@ -43,8 +49,7 @@ class MainActivity : AppCompatActivity() {
                     (recyclerView.adapter as RepositoriesAdapter).addRepositories(pageNum, it)
                 },
                 {
-                    Toast.makeText(this, "API rate limit exceeded", Toast.LENGTH_SHORT).show()
-                    Log.e("ERROR", "ERROR", it)
+                    Snackbar.make(mainLayout, R.string.api_exceeded, Snackbar.LENGTH_SHORT).show()
                 }
             )
     }

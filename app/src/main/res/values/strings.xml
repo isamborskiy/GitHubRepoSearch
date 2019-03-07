@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">GitHubRepoSearch</string>
+
+    <string name="app_name" translatable="false">GitHub RepoSearch</string>
+
+    <!-- Main activity strings -->
     <string name="search">Search</string>
+    <string name="api_exceeded">API rate limit exceeded (try again later)</string>
+
 </resources>

@@ -16,10 +16,12 @@ import kotlinx.android.synthetic.main.list_item_repository.view.*
 
 
 /**
- * @param loadingCallback calls when loading item becomes visible (provides query and page index for loading)
+ * @param loadingCallback calls when loading item becomes visible (provides query, page index and page size for loading)
  */
-class RepositoriesAdapter(private val loadingCallback: (String, Int) -> Unit) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class RepositoriesAdapter(
+    private val pageSize: Int,
+    private val loadingCallback: (String, Int, Int) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private val repositories: MutableList<Repository> = mutableListOf()
     private var query: String? = null
@@ -43,13 +45,13 @@ class RepositoriesAdapter(private val loadingCallback: (String, Int) -> Unit) :
         this.repositories.removeAt(this.repositories.size - 1) // remove loading item
         notifyItemRemoved(this.repositories.size)
 
-        val start = this.repositories.size % PAGE_SIZE
+        val start = this.repositories.size % pageSize
         val newRepos = page.items.subList(start, page.items.size)
 
         this.repositories += newRepos
         if (this.repositories.size < page.totalCount) this.repositories += EMPTY_REPOSITORY
 
-        val firstInsertedItemIndex = (pageNum - 1) * PAGE_SIZE + start
+        val firstInsertedItemIndex = (pageNum - 1) * pageSize + start
         notifyItemRangeInserted(firstInsertedItemIndex, this.repositories.size - firstInsertedItemIndex)
     }
 
@@ -74,7 +76,7 @@ class RepositoriesAdapter(private val loadingCallback: (String, Int) -> Unit) :
             (view as RepositoryViewHolder).bind(repositories[index])
         } else {
             query?.let {
-                loadingCallback(it, repositories.size / PAGE_SIZE + 1)
+                loadingCallback(it, repositories.size / pageSize + 1, pageSize)
             }
         }
     }
@@ -85,8 +87,6 @@ class RepositoriesAdapter(private val loadingCallback: (String, Int) -> Unit) :
         if (repositories[position] == EMPTY_REPOSITORY) LOADING_TYPE else ITEM_TYPE
 
     companion object {
-        const val PAGE_SIZE: Int = 10
-
         private const val ITEM_TYPE: Int = 0
         private const val LOADING_TYPE: Int = 1
     }

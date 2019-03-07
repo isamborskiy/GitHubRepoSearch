@@ -1,3 +1,3 @@
 package io.samborskii.githubreposearch.net
 
-const val API_HOST = "https://api.github.com"
+const val API_HOST: String = "https://api.github.com"
