@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <!-- General dimens -->
     <dimen name="default_margin">8dp</dimen>
     <dimen name="half_default_margin">4dp</dimen>
