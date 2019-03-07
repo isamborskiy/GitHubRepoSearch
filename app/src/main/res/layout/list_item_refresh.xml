@@ -8,8 +8,8 @@
 
     <ImageButton
             android:id="@+id/refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/refresh_icon_size"
+            android:layout_height="@dimen/refresh_icon_size"
             android:layout_margin="@dimen/default_margin"
             android:clickable="true"
             android:focusable="true"
