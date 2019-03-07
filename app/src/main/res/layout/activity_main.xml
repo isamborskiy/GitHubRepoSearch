@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -8,9 +8,21 @@
         android:background="@color/background"
         tools:context=".ui.main.MainActivity">
 
+    <TextView
+            android:id="@+id/emptyData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/repo_info"
+            android:textSize="14sp"
+            android:text="@string/empty_data"/>
+
     <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-</LinearLayout>
+</FrameLayout>

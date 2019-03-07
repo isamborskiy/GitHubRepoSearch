@@ -9,7 +9,7 @@ class GitHubRepoSearchApplication : Application() {
 
     private val component: AppComponent by lazy {
         DaggerAppComponent.builder()
-            .appModule(AppModule())
+            .appModule(AppModule(this))
             .netModule(NetModule())
             .apiModule(ApiModule())
             .build()

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.reactivex.Single
 import io.samborskii.githubreposearch.api.GitHubApi
 import io.samborskii.githubreposearch.api.GitHubClient
+import io.samborskii.githubreposearch.api.SearchParams
 import io.samborskii.githubreposearch.api.entity.SearchResponse
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -22,6 +23,10 @@ class GitHubClientImpl(
         .build()
         .create(GitHubApi::class.java)
 
-    override fun searchRepositories(keywords: List<String>, page: Int, perPage: Int): Single<SearchResponse> =
-        api.searchRepositories(keywords.joinToString("+"), page, perPage)
+    override fun searchRepositories(searchParams: SearchParams): Single<SearchResponse> =
+        api.searchRepositories(
+            searchParams.query.replace("\\s+".toRegex(), "+"),
+            searchParams.pageNum,
+            searchParams.pageSize
+        )
 }

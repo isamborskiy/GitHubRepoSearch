@@ -44,6 +44,10 @@ android {
         abortOnError false
     }
 
+    androidExtensions {
+        experimental = true
+    }
+
     testOptions {
         junitPlatform {
             filters {
@@ -76,9 +80,6 @@ dependencies {
     implementation libraries.rxJava
     implementation libraries.rxKotlin
     implementation libraries.rxAndroid
-
-    implementation libraries.paging
-    implementation libraries.lifecycle
 
     kapt libraries.daggerProcessor
     implementation libraries.dagger

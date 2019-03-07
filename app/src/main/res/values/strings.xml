@@ -3,6 +3,8 @@
     <string name="app_name" translatable="false">GitHub RepoSearch</string>
 
     <!-- Main activity strings -->
+    <string name="empty_data">Use the search above to find repositories</string>
+    <string name="cannot_find_any_repository">We could not find any repositories matching\n\'%s\'</string>
     <string name="search">Search</string>
     <string name="refresh_button">Refresh button</string>
 

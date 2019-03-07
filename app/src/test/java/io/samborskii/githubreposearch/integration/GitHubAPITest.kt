@@ -2,6 +2,7 @@ package io.samborskii.githubreposearch.integration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.samborskii.githubreposearch.api.GitHubClient
+import io.samborskii.githubreposearch.api.SearchParams
 import io.samborskii.githubreposearch.api.impl.GitHubClientImpl
 import io.samborskii.githubreposearch.net.API_HOST
 import okhttp3.OkHttpClient
@@ -23,14 +24,18 @@ class GitHubAPITest {
 
     @Test
     fun `make _nus bus_ query`() {
-        client.searchRepositories(listOf("nus", "bus"), 1, 100)
+        val searchParams = SearchParams("nus bus", 1, 100)
+
+        client.searchRepositories(searchParams)
             .test()
             .assertValue { it.totalCount > 0 && it.items.isNotEmpty() }
     }
 
     @Test
     fun `make empty query`() {
-        client.searchRepositories(listOf(), 1, 100)
+        val searchParams = SearchParams("", 1, 100)
+
+        client.searchRepositories(searchParams)
             .test()
             .assertError { it is HttpException && it.code() == 422 }
     }

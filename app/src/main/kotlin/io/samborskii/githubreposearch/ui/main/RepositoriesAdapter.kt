@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import io.samborskii.githubreposearch.R
+import io.samborskii.githubreposearch.api.SearchParams
 import io.samborskii.githubreposearch.api.entity.EMPTY_REPOSITORY
 import io.samborskii.githubreposearch.api.entity.ERROR_REPOSITORY
 import io.samborskii.githubreposearch.api.entity.Repository
@@ -18,21 +19,36 @@ import kotlinx.android.synthetic.main.list_item_repository.view.*
 
 
 /**
- * @param loadingCallback calls when loading item becomes visible (provides query, page index and page size for loading)
+ * @param loadingCallback calls when loading item becomes visible
+ * @param emptyDataCallback calls when no data to display
  */
 class RepositoriesAdapter(
     private val pageSize: Int,
-    private val loadingCallback: (String, Int, Int) -> Unit
+    private val loadingCallback: (SearchParams) -> Unit,
+    private val emptyDataCallback: (String?, Boolean) -> Unit
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private val repositories: MutableList<Repository> = mutableListOf()
+    private val repositories: ArrayList<Repository> = arrayListOf()
     private var query: String? = null
+
+    fun getQuery(): String? = query
+
+    fun getRepositories(): ArrayList<Repository> = repositories
+
+    fun onRestoreInstanceState(query: String?, repositories: List<Repository>) {
+        this.query = query
+        this.repositories += repositories
+        if (repositories.isEmpty()) emptyDataCallback(query, repositories.isEmpty())
+        notifyDataSetChanged()
+    }
 
     fun setQuery(query: String) {
         if (this.query != query) {
             val size = repositories.size
             this.repositories.clear()
             this.query = null
+
+            emptyDataCallback(null, true)
             notifyItemRangeRemoved(0, size)
 
             if (query.isNotBlank()) {
@@ -55,6 +71,8 @@ class RepositoriesAdapter(
 
         val firstInsertedItemIndex = (pageNum - 1) * pageSize + start
         notifyItemRangeInserted(firstInsertedItemIndex, this.repositories.size - firstInsertedItemIndex)
+
+        emptyDataCallback(query, this.repositories.isEmpty())
     }
 
     fun loadingFailed() {
@@ -86,12 +104,12 @@ class RepositoriesAdapter(
         when (getItemViewType(index)) {
             LOADING_TYPE -> {
                 query?.let {
-                    loadingCallback(it, repositories.size / pageSize + 1, pageSize)
+                    loadingCallback(SearchParams(it, repositories.size / pageSize + 1, pageSize))
                 }
             }
             REFRESH_TYPE -> {
                 query?.let {
-                    (view as RefreshViewHolder).bind { loadingCallback(it, repositories.size / pageSize + 1, pageSize) }
+                    (view as RefreshViewHolder).bind { SearchParams(it, repositories.size / pageSize + 1, pageSize) }
                 }
             }
             // ITEM_TYPE
