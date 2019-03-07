@@ -7,7 +7,7 @@ import dagger.Provides
 import javax.inject.Named
 import javax.inject.Singleton
 
-const val PAGE_SIZE = 10
+const val PAGE_SIZE = 5
 
 @Module
 open class AppModule {

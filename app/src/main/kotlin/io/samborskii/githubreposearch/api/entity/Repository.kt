@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 
 val EMPTY_REPOSITORY = Repository(-1, "", "", null, null)
+val ERROR_REPOSITORY = Repository(-2, "", "", null, null)
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class Repository(

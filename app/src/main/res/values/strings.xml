@@ -4,6 +4,7 @@
 
     <!-- Main activity strings -->
     <string name="search">Search</string>
+    <string name="refresh_button">Refresh button</string>
     <string name="api_exceeded">API rate limit exceeded (try again later)</string>
 
 </resources>

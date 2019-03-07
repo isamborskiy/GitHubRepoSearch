@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import io.samborskii.githubreposearch.R
 import io.samborskii.githubreposearch.api.entity.EMPTY_REPOSITORY
+import io.samborskii.githubreposearch.api.entity.ERROR_REPOSITORY
 import io.samborskii.githubreposearch.api.entity.Repository
 import io.samborskii.githubreposearch.api.entity.SearchResponse
+import kotlinx.android.synthetic.main.list_item_refresh.view.*
 import kotlinx.android.synthetic.main.list_item_repository.view.*
 
 
@@ -42,7 +44,7 @@ class RepositoriesAdapter(
     }
 
     fun addRepositories(pageNum: Int, page: SearchResponse) {
-        this.repositories.removeAt(this.repositories.size - 1) // remove loading item
+        this.repositories.removeAt(this.repositories.lastIndex) // remove loading item
         notifyItemRemoved(this.repositories.size)
 
         val start = this.repositories.size % pageSize
@@ -55,40 +57,62 @@ class RepositoriesAdapter(
         notifyItemRangeInserted(firstInsertedItemIndex, this.repositories.size - firstInsertedItemIndex)
     }
 
+    fun loadingFailed() {
+        this.repositories[this.repositories.lastIndex] = ERROR_REPOSITORY
+        notifyItemChanged(this.repositories.lastIndex)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
 
         return when (type) {
-            ITEM_TYPE -> {
-                val view = inflater.inflate(R.layout.list_item_repository, parent, false)
-                RepositoryViewHolder(view)
-            }
-            // LOADING_TYPE
-            else -> {
+            LOADING_TYPE -> {
                 val view = inflater.inflate(R.layout.list_item_loading, parent, false)
                 LoadingViewHolder(view)
+            }
+            REFRESH_TYPE -> {
+                val view = inflater.inflate(R.layout.list_item_refresh, parent, false)
+                RefreshViewHolder(view)
+            }
+            // ITEM_TYPE
+            else -> {
+                val view = inflater.inflate(R.layout.list_item_repository, parent, false)
+                RepositoryViewHolder(view)
             }
         }
     }
 
     override fun onBindViewHolder(view: RecyclerView.ViewHolder, index: Int) {
-        if (getItemViewType(index) == ITEM_TYPE) {
-            (view as RepositoryViewHolder).bind(repositories[index])
-        } else {
-            query?.let {
-                loadingCallback(it, repositories.size / pageSize + 1, pageSize)
+        when (getItemViewType(index)) {
+            LOADING_TYPE -> {
+                query?.let {
+                    loadingCallback(it, repositories.size / pageSize + 1, pageSize)
+                }
+            }
+            REFRESH_TYPE -> {
+                query?.let {
+                    (view as RefreshViewHolder).bind { loadingCallback(it, repositories.size / pageSize + 1, pageSize) }
+                }
+            }
+            // ITEM_TYPE
+            else -> {
+                (view as RepositoryViewHolder).bind(repositories[index])
             }
         }
     }
 
     override fun getItemCount(): Int = repositories.size
 
-    override fun getItemViewType(position: Int): Int =
-        if (repositories[position] == EMPTY_REPOSITORY) LOADING_TYPE else ITEM_TYPE
+    override fun getItemViewType(position: Int): Int = when (repositories[position]) {
+        EMPTY_REPOSITORY -> LOADING_TYPE
+        ERROR_REPOSITORY -> REFRESH_TYPE
+        else -> ITEM_TYPE
+    }
 
     companion object {
         private const val ITEM_TYPE: Int = 0
         private const val LOADING_TYPE: Int = 1
+        private const val REFRESH_TYPE: Int = 2
     }
 }
 
@@ -118,3 +142,10 @@ class RepositoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 }
 
 class LoadingViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+
+class RefreshViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    fun bind(refresh: () -> Unit) {
+        itemView.refresh.setOnClickListener { refresh() }
+    }
+}

@@ -2,9 +2,9 @@ package io.samborskii.githubreposearch.ui.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import io.samborskii.githubreposearch.GitHubRepoSearchApplication
@@ -45,11 +45,10 @@ class MainActivity : AppCompatActivity() {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
+                { (recyclerView.adapter as RepositoriesAdapter).addRepositories(pageNum, it) },
                 {
-                    (recyclerView.adapter as RepositoriesAdapter).addRepositories(pageNum, it)
-                },
-                {
-                    Snackbar.make(mainLayout, R.string.api_exceeded, Snackbar.LENGTH_SHORT).show()
+                    (recyclerView.adapter as RepositoriesAdapter).loadingFailed()
+                    Toast.makeText(this, R.string.api_exceeded, Toast.LENGTH_SHORT).show()
                 }
             )
     }
