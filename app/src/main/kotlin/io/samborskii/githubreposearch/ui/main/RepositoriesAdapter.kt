@@ -109,7 +109,9 @@ class RepositoriesAdapter(
             }
             REFRESH_TYPE -> {
                 query?.let {
-                    (view as RefreshViewHolder).bind { SearchParams(it, repositories.size / pageSize + 1, pageSize) }
+                    (view as RefreshViewHolder).bind {
+                        loadingCallback(SearchParams(it, repositories.size / pageSize + 1, pageSize))
+                    }
                 }
             }
             // ITEM_TYPE
